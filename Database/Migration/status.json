@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "label": "Etude",
+    "progression": "30%"
+  },
+  {
+    "id": "2",
+    "label": "Evaluation produit",
+    "progression": "50%"
+  },
+  {
+    "id": "3",
+    "label": "Avancement",
+    "progression": "70%"
+  },
+  {
+    "id": "4",
+    "label": "Finalisation",
+    "progression": "90%"
+  }
+]

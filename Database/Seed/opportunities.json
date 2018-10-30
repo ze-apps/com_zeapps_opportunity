@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "name": "Opportunité 1",
+    "budget": 15000,
+    "next_raise": "2018-11-30 19:09:00",
+    "id_company": 1,
+    "name_company": "Apple",
+    "id_contact": "1",
+    "name_contact": "John Doe",
+    "id_activity": "1",
+    "name_activity": "Site internet",
+    "id_status": "1",
+    "name_status": "Etude",
+    "progression": "30%"
+  },
+  {
+    "id": "2",
+    "name": "Opportunité 2",
+    "budget": 12500,
+    "next_raise": "2018-12-24 21:01:50",
+    "id_company": 2,
+    "name_company": "Microsoft",
+    "id_contact": "1",
+    "name_contact": "John Doe",
+    "id_activity": "3",
+    "name_activity": "Support",
+    "id_status": "2",
+    "name_status": "Evaluation produit",
+    "progression": "50%"
+  }
+]
