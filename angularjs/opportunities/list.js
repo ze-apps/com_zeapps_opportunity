@@ -1,4 +1,5 @@
 app.controller("ComZeappsOpportunityOpportunitiesListCtrl", ["$scope", "$location", "$rootScope", "zeHttp", "zeapps_modal", "menu",
+
     function ($scope, $location, $rootScope, zhttp, zeapps_modal, menu) {
 
         menu("com_ze_apps_sales", "com_zeapps_sales_opportunity");
@@ -72,9 +73,6 @@ app.controller("ComZeappsOpportunityOpportunitiesListCtrl", ["$scope", "$locatio
                     }
                     $scope.opportunities = response.data.opportunities;
 
-                    /*angular.forEach($scope.opportunities, function(company){
-                        company.discount = parseFloat(company.discount);
-                    });*/
                     // stock la liste des compagnies pour la navigation par fleche
                     $rootScope.opportunities_ids = response.data.ids;
                     $scope.total = response.data.total;
@@ -89,9 +87,9 @@ app.controller("ComZeappsOpportunityOpportunitiesListCtrl", ["$scope", "$locatio
 
         function getExcel() {
             var formatted_filters = angular.toJson($scope.filter_model);
-            zhttp.contact.company.excel.make(formatted_filters).then(function (response) {
+            zhttp.opportunity.opportunity.excel.make(formatted_filters).then(function (response) {
                 if (response.data && response.data !== "false") {
-                    window.document.location.href = zhttp.contact.company.excel.get();
+                    window.document.location.href = zhttp.opportunity.opportunity.excel.get();
                 }
                 else {
                     toasts('info', "Aucune opportunité correspondant à vos critères n'a pu etre trouvée");
@@ -102,19 +100,19 @@ app.controller("ComZeappsOpportunityOpportunitiesListCtrl", ["$scope", "$locatio
         function add(opportunity) {
             var formatted_data = angular.toJson(opportunity);
             zhttp.opportunity.opportunity.save(formatted_data).then(function (response) {
-                if (response.data && response.data != "false") {
+                if (response.data && response.data !== "false") {
                     loadList();
                 }
             });
         }
 
-        function edit(company) {
-            var formatted_data = angular.toJson(company);
-            zhttp.contact.company.save(formatted_data);
+        function edit(opportunity) {
+            var formatted_data = angular.toJson(opportunity);
+            zhttp.opportunity.opportunity.save(formatted_data);
         }
 
-        function del(company) {
-            zhttp.contact.company.del(company.id).then(function (response) {
+        function del(opportunity) {
+            zhttp.opportunity.opportunity.del(opportunity.id).then(function (response) {
                 if (response.status == 200) {
                     loadList();
                 }

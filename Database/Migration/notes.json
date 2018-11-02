@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "comments": "Interessé par l'offre et doit en parler avec son directeur",
+    "id_opportunity": 1
+  },
+  {
+    "id": "2",
+    "comments": "Il a fait la démo et semble intéressé",
+    "id_opportunity": 1
+  },
+  {
+    "id": "3",
+    "comments": "Trouve très intéressant le module des opportunités",
+    "id_opportunity": 2
+  },
+  {
+    "id": "4",
+    "comments": "Prendra sa décision en décembre après le conseil d'administration",
+    "id_opportunity": 2
+  }
+]

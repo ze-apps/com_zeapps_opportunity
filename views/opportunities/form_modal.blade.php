@@ -1,5 +1,5 @@
 
-<div ng-controller="ComZeappsContactCompaniesFormCtrl">
+<div ng-controller="ComZeappsOpportunityEditCtrl">
 
     <div class="row">
         <div class="col-md-6">
@@ -115,21 +115,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>15/09/2018</td>
-                                <td>Prendra sa décision en décembre après le conseil d'administration</td>
-                            </tr>
-                            <tr>
-                                <td>10/09/2018</td>
-                                <td>Trouve très intéressant le module des opportunités</td>
-                            </tr>
-                            <tr>
-                                <td>02/09/2018</td>
-                                <td>Il a fait la démo et semble intéressé</td>
-                            </tr>
-                            <tr>
-                                <td>01/09/2018</td>
-                                <td>Interessé par l'offre et doit en parler avec son directeur</td>
+                            <tr ng-repeat="note in notes">
+                                <td class="col-md-3">@{{note.created_at || "-" | date:'dd/MM/yyyy'}}</td>
+                                <td class="col-md-9">@{{note.comments}}</td>
                             </tr>
                         </tbody>
                     </table>

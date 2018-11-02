@@ -54,7 +54,6 @@
                         <ze-btn fa="pencil" color="info" hint="Editer" direction="left"
                                 ze-modalform="edit"
                                 data-edit="opportunity"
-                                data-id="opportunity.id"
                                 data-template="templateForm"
                                 data-title="Modifier l'opportunité"></ze-btn>
                         <ze-btn fa="trash" color="danger" hint="Supprimer" direction="left" ng-click="delete(opportunity)" ze-confirmation></ze-btn>

@@ -49,18 +49,21 @@ class Opportunity extends Model {
         parent::__construct($attributes);
     }
 
-    public function getFields() {
-        return $this->fieldModelInfo->getFields();
+    public static function getSchema() {
+        return $schema = Capsule::schema()->getColumnListing(self::$_table) ;
     }
 
     public function save(array $options = []) {
 
-        /******** clean data **********/
-        $this->fieldModelInfo->cleanData($this) ;
-
-
         /**** to delete unwanted field ****/
-        $this->fieldModelInfo->removeFieldUnwanted($this) ;
+        $schema = self::getSchema();
+        foreach ($this->getAttributes() as $key => $value) {
+            if (!in_array($key, $schema)) {
+                //echo $key . "\n" ;
+                unset($this->$key);
+            }
+        }
+        /**** end to delete unwanted field ****/
 
         return parent::save($options);
     }

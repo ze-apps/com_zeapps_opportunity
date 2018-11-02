@@ -1,5 +1,33 @@
-app.controller("ComZeappsContactCompaniesFormCtrl", ["$scope", "$rootScope", "zeHttp",
+app.controller("ComZeappsOpportunityEditCtrl", ["$scope", "$rootScope", "zeHttp",
 	function ($scope, $rootScope, zhttp) {
+
+        //**************************** Spécial modal ajout note ****************************
+
+        $scope.templateForm = '/com_zeapps_opportunity/notes/form_modal';
+
+        $scope.add = add;
+
+        function add(note) {
+
+            var formatted_data = angular.toJson(note);
+            zhttp.opportunity.note.save(formatted_data).then(function (response) {
+                if (response.data && response.data !== "false") {
+                    loadList();
+                }
+            });
+        }
+
+        function loadList() {
+
+            zhttp.opportunity.note.all().then(function (response) {
+                if (response.status == 200) {
+                        $scope.notes = response.data.notes;
+                        formatDates($scope.notes);
+                }
+            });
+        }
+
+        //***********************************************************************************
 
         var currentTab = 'general' ;
 
@@ -65,8 +93,22 @@ app.controller("ComZeappsContactCompaniesFormCtrl", ["$scope", "$rootScope", "ze
 
             if (response.status == 200) {
 
+                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
+                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
+                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
+                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
+                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
+                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
+
+                // id de l'opportunité
+                console.log($scope.form.id);
+
+
                 $scope.activities = response.data.activities;
                 $scope.status = response.data.status;
+
+                $scope.notes = response.data.notes;
+                formatDates($scope.notes);
 
                 $scope.$parent.form.id_user_account_manager = $rootScope.user.id;
                 $scope.$parent.form.name_user_account_manager =  $rootScope.user.firstname + " " +  $rootScope.user.lastname;
@@ -74,19 +116,6 @@ app.controller("ComZeappsContactCompaniesFormCtrl", ["$scope", "$rootScope", "ze
             }
 
         });
-
-        /*zhttp.opportunity.opportunity.modal().then(function () {
-
-            var id_opportunity = $scope.form.id;
-
-
-        });*/
-
-        /*zhttp.opportunity.opportunity.save().then(function () {
-
-            console.log("---> " + $scope.form.id);
-
-        });*/
 
         function isTabActive(tab){
             return currentTab === tab ? 'active' : '';
@@ -135,6 +164,16 @@ app.controller("ComZeappsContactCompaniesFormCtrl", ["$scope", "$rootScope", "ze
                 $scope.$parent.form.id_contact = 0;
                 $scope.$parent.form.name_contact = "";
             }
+        }
+
+
+        // ********************* Private ************************
+        function formatDates(notes) {
+            notes.forEach(function(element) {
+                element.created_at = element.created_at.replace(" ", "T");
+                var new_date = new Date(element.created_at);
+                element.created_at = new_date.toLocaleString();
+            });
         }
 
 	}]);

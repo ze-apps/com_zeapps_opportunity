@@ -39,7 +39,11 @@ app.config(["$provide",
 						make : makeExcel_opportunity,
 						get : getExcel_opportunity
 					}
-				}
+				},
+                note : {
+                    all : getAll_notes,
+                    save : save_note
+                }
 			};
 
 			zeHttp.config = angular.extend(zeHttp.config || {}, {
@@ -106,6 +110,8 @@ app.config(["$provide",
 
 
 
+
+
 			function context_opportunity(){
 				return zeHttp.get("/com_zeapps_opportunity/opportunities/context/");
 			}
@@ -129,6 +135,14 @@ app.config(["$provide",
             }
             function getExcel_opportunity(){
                 return "/com_zeapps_opportunity/opportunities/get_export/";
+            }
+
+
+            function getAll_notes(context){
+                return zeHttp.post("/com_zeapps_opportunity/notes/getAll/" + context);
+            }
+            function save_note(data){
+                return zeHttp.post("/com_zeapps_opportunity/notes/save", data);
             }
 
 

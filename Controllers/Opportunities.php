@@ -3,6 +3,7 @@
 namespace App\com_zeapps_opportunity\Controllers;
 
 use App\com_zeapps_opportunity\Models\Activity;
+use App\com_zeapps_opportunity\Models\Note;
 use App\com_zeapps_opportunity\Models\Status;
 use Zeapps\Core\Controller;
 use Zeapps\Core\Request;
@@ -76,7 +77,8 @@ class Opportunities extends Controller
         ));
     }
 
-    public function modal(Request $request) {
+    public function modal(Request $request)
+    {
         $limit = $request->input('limit', 15);
         $offset = $request->input('offset', 0);
 
@@ -109,7 +111,9 @@ class Opportunities extends Controller
         echo json_encode(array("data" => $opportunities, "total" => $total));
     }
 
-    public function context() {
+    public function context(Request $request)
+    {
+        $id_opportunity = $request->input('id_opportunity', 0);
 
         if(!$activities = Activity::orderBy('id')->get()) {
             $activities = array();
@@ -119,11 +123,15 @@ class Opportunities extends Controller
             $status = array();
         }
 
-        echo json_encode(array('activities' => $activities, 'status' => $status));
+        if(!$notes = Note::where('id_opportunity', $id_opportunity)->orderBy('id', 'DESC')->limit(4)->get()) {
+            $notes = array();
+        }
+
+        echo json_encode(array('activities' => $activities, 'status' => $status, 'notes' => $notes));
     }
 
-    public function get(Request $request) {
-
+    public function get(Request $request)
+    {
         $id = $request->input('id', 0);
 
         $opportunity = OpportunitiesModel::where('id', $id)->first();
@@ -140,8 +148,8 @@ class Opportunities extends Controller
         ));
     }
 
-    public function save() {
-
+    public function save()
+    {
         // constitution du tableau
         $data = array() ;
 
@@ -159,9 +167,6 @@ class Opportunities extends Controller
         foreach ($data as $key =>$value) {
             $opportunity->$key = $value ;
         }
-
-        // Insert correct date
-        //$opportunity->next_raise = DateTime::createFromFormat('d/m/Y', $opportunity->next_raise)->format("Y-m-d");
 
         $opportunity->save();
 

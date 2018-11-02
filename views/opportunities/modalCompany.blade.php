@@ -16,12 +16,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="company in companies">
-                    <td><a href="#" ng-click="loadCompany(company.id)">@{{company.company_name}}</a></td>
-                    <td><a href="#" ng-click="loadCompany(company.id)">@{{company.phone}}</a></td>
-                    <td><a href="#" ng-click="loadCompany(company.id)">@{{company.billing_city}}</a></td>
-                    <td><a href="#" ng-click="loadCompany(company.id)">@{{company.name_user_account_manager}}</a></td>
-                </tr>
+                    <tr ng-repeat="company in companies">
+                        <td><a href="#" ng-click="loadCompany(company.id)">@{{company.company_name}}</a></td>
+                        <td><a href="#" ng-click="loadCompany(company.id)">@{{company.phone}}</a></td>
+                        <td><a href="#" ng-click="loadCompany(company.id)">@{{company.billing_city}}</a></td>
+                        <td><a href="#" ng-click="loadCompany(company.id)">@{{company.name_user_account_manager}}</a></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

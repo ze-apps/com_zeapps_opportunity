@@ -5,6 +5,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 use App\com_zeapps_opportunity\Models\Activity;
 use App\com_zeapps_opportunity\Models\Status;
+use App\com_zeapps_opportunity\Models\Note;
 
 class ComZeappsOpportunityInit
 {
@@ -91,6 +92,16 @@ class ComZeappsOpportunityInit
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Capsule::table('com_zeapps_opportunity_notes')->truncate();
+        $notes = json_decode(file_get_contents(dirname(__FILE__) . "/notes.json"));
+        foreach ($notes as $notes_json) {
+            $note = new Note();
+            foreach ($notes_json as $key => $value) {
+                $note->$key = $value ;
+            }
+            $note->save();
+        }
 
         // ************************************** Documents ********************************************
         Capsule::schema()->create('com_zeapps_opportunity_documents', function (Blueprint $table) {
