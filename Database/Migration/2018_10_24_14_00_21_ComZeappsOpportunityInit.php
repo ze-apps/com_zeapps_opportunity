@@ -6,6 +6,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use App\com_zeapps_opportunity\Models\Activity;
 use App\com_zeapps_opportunity\Models\Status;
 use App\com_zeapps_opportunity\Models\Note;
+use App\com_zeapps_opportunity\Models\Document;
 
 class ComZeappsOpportunityInit
 {
@@ -67,6 +68,10 @@ class ComZeappsOpportunityInit
             $table->integer('id_contact', false, true)->default(0);
             $table->string('name_contact', 255)->default("");
 
+            // User account manager
+            $table->integer('id_user_account_manager', false, true)->default(0);
+            $table->string('name_user_account_manager', 255)->default("");
+
             // Activities
             $table->integer('id_activity', false, true)->default(0);
             $table->string('name_activity', 255)->default("");
@@ -108,6 +113,7 @@ class ComZeappsOpportunityInit
 
             $table->increments('id');
             $table->string('label');
+            $table->double('size');
             $table->string('path');
             $table->string('type', 150);
 
@@ -115,11 +121,21 @@ class ComZeappsOpportunityInit
             $table->integer('id_opportunity', false, true)->default(0);
 
             // Users
-            $table->integer('id_user', false, true)->default(0);
+            $table->integer('id_user_account_manager', false, true)->default(0);
 
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Capsule::table('com_zeapps_opportunity_documents')->truncate();
+        $documents = json_decode(file_get_contents(dirname(__FILE__) . "/documents.json"));
+        foreach ($documents as $documents_json) {
+            $document = new Document();
+            foreach ($documents_json as $key => $value) {
+                $document->$key = $value ;
+            }
+            $document->save();
+        }
 
     }
 

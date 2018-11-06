@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "label": "logo.png",
+    "size": 236,
+    "path": "/Users/azizbennane/Documents/GitHub/Z/ze-apps-core/public/uploads/logo.png",
+    "type": "png",
+    "id_opportunity": 1,
+    "id_user_account_manager": 1
+  },
+  {
+    "id": "2",
+    "label": "image.jpg",
+    "size": 738,
+    "path": "/Users/azizbennane/Documents/GitHub/Z/ze-apps-core/public/uploads/image.jpg",
+    "type": "jpg",
+    "id_opportunity": 1,
+    "id_user_account_manager": 1
+  },
+  {
+    "id": "3",
+    "label": "document.doc",
+    "size": 784,
+    "path": "/Users/azizbennane/Documents/GitHub/Z/ze-apps-core/public/uploads/document.doc",
+    "type": "doc",
+    "id_opportunity": 2,
+    "id_user_account_manager": 1
+  },
+  {
+    "id": "4",
+    "label": "picto.png",
+    "size": 178,
+    "path": "/Users/azizbennane/Documents/GitHub/Z/ze-apps-core/public/uploads/picto.png",
+    "type": "png",
+    "id_opportunity": 2,
+    "id_user_account_manager": 1
+  }
+]

@@ -82,19 +82,37 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Prochaine relance <span class="required">*</span></label>
-                <input type="text" ng-model="form.next_raise" class="form-control" ng-required="true">
+                <input id="next_raise" type="text" ng-model="form.next_raise" class="form-control" ng-required="true">
             </div>
         </div>
 
+        <script type="text/javascript">
+            $('#next_raise').datepicker({
+                uiLibrary: 'bootstrap',
+                altField: "#next_raise",
+                closeText: 'Fermer',
+                prevText: 'Précédent',
+                nextText: 'Suivant',
+                currentText: 'Aujourd\'hui',
+                monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+                dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+                dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                weekHeader: 'Sem.',
+                dateFormat: 'dd/mm/yy'
+            });
+        </script>
+
     </div>
 
-    <ul role="tablist" class="nav nav-tabs">
+    <ul role="tablist" class="nav nav-tabs" ng-show="form.id">
         <li ng-class="isTabActive('general')"><a href="#" ng-click="setTab('general')">Notes</a></li>
         <li ng-class="isTabActive('documents')"><a href="#" ng-click="setTab('documents')">Documents</a></li>
         <li ng-class="isTabActive('devis')"><a href="#" ng-click="setTab('devis')">Devis</a></li>
     </ul>
 
-    <div ng-if="displayTab('general')">
+    <div ng-if="displayTab('general') && form.id">
 
         <div class="row">
             <div class="col-md-12">
@@ -112,12 +130,21 @@
                             <tr>
                                 <th>Date</th>
                                 <th>Commentaire</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="note in notes">
                                 <td class="col-md-3">@{{note.created_at || "-" | date:'dd/MM/yyyy'}}</td>
-                                <td class="col-md-9">@{{note.comments}}</td>
+                                <td class="col-md-8">@{{note.comments}}</td>
+                                <td class="col-md-1">
+                                    <ze-btn fa="pencil" color="info" hint="Editer" direction="left"
+                                             data-edit="note"
+                                             ze-modalform="edit"
+                                             data-template="templateForm"
+                                             data-title="Modifier cette note"></ze-btn>
+                                    <ze-btn fa="trash" color="danger" hint="Supprimer" direction="left" ng-click="delete(note)" data-title="Supprimer cette note" ze-confirmation></ze-btn>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -127,17 +154,67 @@
 
     </div>
 
-    <div ng-if="displayTab('documents')">
+    <div ng-if="displayTab('documents') && form.id">
 
         <div class="row">
-            <div class="col-md-12 text-center">
-                <strong>Documents ici</strong>
+
+            <div class="col-md-12 center-block" style="margin-bottom: 7px">
+
+                <form method="post" enctype="multipart/form-data" id="formUploadFile" name="formUploadFile">
+
+                    <div class="col-md-offset-3 col-md-4">
+                        <input type="file" name="files[]" multiple="multiple" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <button id="btnSubmit" name="btnSubmit" type="submit" title="Envoyer ce document" class="btn btn-xs btn-primary">
+                            <i class="fa fa-upload"></i>
+                        </button>
+                    </div>
+
+                    <script type="text/javascript">
+
+                        $('#btnSubmit').click(function(e) {
+                            $('#formUploadFile')[0].submit();
+                            e.preventDefault();
+                        });
+
+                    </script>
+
+                </form>
+
             </div>
+
+            <div class="col-md-12 center-block">
+                <table class="table table-condensed table-striped" ng-if="documents">
+
+                    <thead class="bg-primary">
+                        <tr>
+                            <th>Nom du fichier</th>
+                            <th>Taille</th>
+                            <th>Date d'envoi</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="document in documents">
+                            <td><strong>@{{document.label}}</strong></td>
+                            <td>@{{document.size}}</td>
+                            <td>@{{document.created_at || "-" | date:'dd/MM/yyyy'}}</td>
+                            <td class="col-md-1">
+                                <ze-btn fa="trash" color="danger" hint="Supprimer" direction="left" ng-click="delete(document)" data-title="Supprimer ce fichier" ze-confirmation></ze-btn>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
     </div>
 
-    <div ng-if="displayTab('devis')">
+    <div ng-if="displayTab('devis') && form.id">
 
         <div class="row">
             <div class="col-md-12 text-center">

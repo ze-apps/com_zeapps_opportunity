@@ -9,10 +9,13 @@ use Zeapps\Core\Request;
 
 class Notes extends Controller
 {
-    public function getAll()
+    public function getAll(Request $request)
     {
-        if(!$notes = Note::orderBy('id', 'DESC')->limit(4)->get()) {
-            $notes = array();
+        $id_opportunity = $request->input('id_opportunity', 0);
+
+        $notes = array();
+        if ($id_opportunity > 0) {
+            $notes = Note::where("id_opportunity", $id_opportunity)->orderBy('id', 'DESC')->get() ;
         }
 
         echo json_encode(array('notes' => $notes));
@@ -43,8 +46,21 @@ class Notes extends Controller
             $note = Note::where('id', $data["id"])->first() ;
         }
 
-        foreach ($data as $key =>$value) {
-            $note->$key = $value ;
+        foreach ($data as $key => $value) {
+
+            if ($key == 'created_at') {
+                $value = explode(' à ', $value);
+
+                $date = $value[0];
+                $date = explode('/', $date);
+
+                $heure = $value[1];
+
+                $note->$key = $date[2] . '-' . $date[1] . '-' . $date[0] . ' ' . $heure;
+            } else {
+                $note->$key = $value;
+            }
+
         }
 
         $note->save();
@@ -55,7 +71,6 @@ class Notes extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id', 0);
-
         echo json_encode(Note::where('id', $id)->delete());
     }
 

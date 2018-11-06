@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Zeapps\Core\ModelHelper;
 
-class Note extends Model {
+class Document extends Model {
     use SoftDeletes;
 
-    static protected $_table = 'com_zeapps_opportunity_notes';
+    static protected $_table = 'com_zeapps_opportunity_documents';
     protected $table ;
 
     protected $fieldModelInfo ;
@@ -23,9 +23,13 @@ class Note extends Model {
         // Note fields
         $this->fieldModelInfo = new ModelHelper();
         $this->fieldModelInfo->increments('id');
-        $this->fieldModelInfo->text('comments');
+        $this->fieldModelInfo->text('label');
+        $this->fieldModelInfo->double('size');
+        $this->fieldModelInfo->text('path');
+        $this->fieldModelInfo->text('type');
 
         $this->fieldModelInfo->integer('id_opportunity', false, true)->default(0);
+        $this->fieldModelInfo->integer('id_user_account_manager', false, true)->default(0);
 
         $this->fieldModelInfo->timestamps();
         $this->fieldModelInfo->softDeletes();

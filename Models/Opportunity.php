@@ -34,6 +34,10 @@ class Opportunity extends Model {
         $this->fieldModelInfo->integer('id_contact', false, true)->default(0);
         $this->fieldModelInfo->string('name_contact', 255)->default("");
 
+        // User account manager
+        $this->fieldModelInfo->integer('id_user_account_manager', false, true)->default(0);
+        $this->fieldModelInfo->string('name_user_account_manager', 255)->default("");
+
         // Activities
         $this->fieldModelInfo->integer('id_activity', false, true)->default(0);
         $this->fieldModelInfo->string('name_activity', 255)->default("");

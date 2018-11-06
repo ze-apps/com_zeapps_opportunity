@@ -111,10 +111,8 @@ class Opportunities extends Controller
         echo json_encode(array("data" => $opportunities, "total" => $total));
     }
 
-    public function context(Request $request)
+    public function context()
     {
-        $id_opportunity = $request->input('id_opportunity', 0);
-
         if(!$activities = Activity::orderBy('id')->get()) {
             $activities = array();
         }
@@ -123,7 +121,7 @@ class Opportunities extends Controller
             $status = array();
         }
 
-        if(!$notes = Note::where('id_opportunity', $id_opportunity)->orderBy('id', 'DESC')->limit(4)->get()) {
+        if(!$notes = Note::orderBy('id', 'DESC')->get()) {
             $notes = array();
         }
 
@@ -164,7 +162,15 @@ class Opportunities extends Controller
             $opportunity = OpportunitiesModel::where('id', $data["id"])->first() ;
         }
 
-        foreach ($data as $key =>$value) {
+        foreach ($data as $key => $value) {
+
+            if ($key == 'next_raise') {
+                if (strpos($value,'/')) {
+                    $value = explode('/', $value);
+                    $value = $value[2] . '/' . $value[1] . '/' . $value [0] ;
+                }
+            }
+
             $opportunity->$key = $value ;
         }
 

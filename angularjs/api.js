@@ -42,7 +42,14 @@ app.config(["$provide",
 				},
                 note : {
                     all : getAll_notes,
-                    save : save_note
+                    get: get_note,
+                    save : save_note,
+                    del : delete_note
+                },
+                document : {
+                    all : getAll_documents,
+                    save : save_document,
+                    del : delete_document
                 }
 			};
 
@@ -51,6 +58,8 @@ app.config(["$provide",
 
 			return zeHttp;
 
+			/////////////////////////////////////////////// COMPANY ///////////////////////////////////////////////
+            //
             function context_company(){
                 return zeHttp.get("/com_zeapps_contact/companies/context/");
             }
@@ -76,11 +85,8 @@ app.config(["$provide",
                 return "/com_zeapps_contact/companies/get_export/";
             }
 
-
-
-
-
-
+            ///////////////////////////// CONTACT ///////////////////////////////
+            //
             function context_contact(){
                 return zeHttp.get("/com_zeapps_contact/contacts/context/");
             }
@@ -109,9 +115,8 @@ app.config(["$provide",
             }
 
 
-
-
-
+            //////////////////////////////////////////// OPPORTUNITE /////////////////////////////////////////////////
+            //
 			function context_opportunity(){
 				return zeHttp.get("/com_zeapps_opportunity/opportunities/context/");
 			}
@@ -137,14 +142,32 @@ app.config(["$provide",
                 return "/com_zeapps_opportunity/opportunities/get_export/";
             }
 
-
-            function getAll_notes(context){
-                return zeHttp.post("/com_zeapps_opportunity/notes/getAll/" + context);
+            ///////////////////////////////////////////////// NOTE //////////////////////////////////////////////////
+            //
+            function getAll_notes(id_opportunity){
+                return zeHttp.post("/com_zeapps_opportunity/notes/getAll/" + id_opportunity);
+            }
+            function get_note(id_note){
+                return zeHttp.post("/com_zeapps_opportunity/notes/get/" + id_note);
             }
             function save_note(data){
                 return zeHttp.post("/com_zeapps_opportunity/notes/save", data);
             }
+            function delete_note(id){
+                return zeHttp.delete("/com_zeapps_opportunity/notes/delete/" + id);
+            }
 
+            /////////////////////////////////////////////// DOCUMENT ///////////////////////////////////////////////
+            //
+            function getAll_documents(id_user_account_manager, id_opportunity) {
+                return zeHttp.post("/com_zeapps_opportunity/documents/getAll/" + id_user_account_manager + "/" + id_opportunity);
+            }
+            function save_document(id_user_account_manager, id_opportunity) {
+                return zeHttp.post("/com_zeapps_opportunity/documents/save/" + id_user_account_manager + "/" + id_opportunity);
+            }
+            function delete_document(id_user_account_manager, id_opportunity) {
+                return zeHttp.delete("/com_zeapps_opportunity/documents/delete/" + id_user_account_manager + "/" + id_opportunity);
+            }
 
 
 		}]);

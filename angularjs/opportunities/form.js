@@ -1,14 +1,29 @@
 app.controller("ComZeappsOpportunityEditCtrl", ["$scope", "$rootScope", "zeHttp",
+
 	function ($scope, $rootScope, zhttp) {
 
-        //**************************** Spécial modal ajout note ****************************
+        //**************************** Spécial modal note (onglets) ****************************
 
         $scope.templateForm = '/com_zeapps_opportunity/notes/form_modal';
 
         $scope.add = add;
+        $scope.edit = edit;
+        $scope.delete = del;
+
+        $scope.upload = upload;
+        function upload(document) {
+            note.id_opportunity = $scope.form.id ;
+            var formatted_data = angular.toJson(document);
+            zhttp.opportunity.document.save(formatted_data).then(function (response) {
+                if (response.data && response.data !== "false") {
+                    loadList();
+                }
+            });
+        }
+
 
         function add(note) {
-
+            note.id_opportunity = $scope.form.id ;
             var formatted_data = angular.toJson(note);
             zhttp.opportunity.note.save(formatted_data).then(function (response) {
                 if (response.data && response.data !== "false") {
@@ -17,19 +32,51 @@ app.controller("ComZeappsOpportunityEditCtrl", ["$scope", "$rootScope", "zeHttp"
             });
         }
 
+        function edit(note) {
+            note.id_opportunity = $scope.form.id ;
+            var formatted_data = angular.toJson(note);
+            zhttp.opportunity.note.save(formatted_data).then(function (response) {
+                if (response.data && response.data !== "false") {
+                    loadList();
+                }
+            });
+        }
+
+        function del(note) {
+            zhttp.opportunity.note.del(note.id).then(function (response) {
+                if (response.status == 200) {
+                    loadList();
+                }
+            });
+        }
+
         function loadList() {
 
-            zhttp.opportunity.note.all().then(function (response) {
+            // Notes
+            zhttp.opportunity.note.all($scope.form.id).then(function (response) {
                 if (response.status == 200) {
-                        $scope.notes = response.data.notes;
+                    $scope.notes = response.data.notes;
+                    if ($scope.notes) {
                         formatDates($scope.notes);
+                    }
+                }
+            });
+
+            // Documents
+            zhttp.opportunity.document.all(1, $scope.form.id).then(function (response) {
+
+                if (response.status == 200) {
+                    $scope.documents = response.data.documents;
+                    if ($scope.documents) {
+                        formatDates($scope.documents);
+                    }
                 }
             });
         }
 
         //***********************************************************************************
 
-        var currentTab = 'general' ;
+        var currentTab = 'general';
 
 		$scope.accountManagerHttp = zhttp.app.user;
 		$scope.accountManagerFields = [
@@ -93,21 +140,11 @@ app.controller("ComZeappsOpportunityEditCtrl", ["$scope", "$rootScope", "zeHttp"
 
             if (response.status == 200) {
 
-                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
-                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
-                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
-                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
-                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
-                // TODO : Filtrer les notes via l'id de l'opportunité en cours (Solution JS pour le momement)
-
-                // id de l'opportunité
-                console.log($scope.form.id);
-
-
                 $scope.activities = response.data.activities;
                 $scope.status = response.data.status;
 
-                $scope.notes = response.data.notes;
+                var id_opportunity = $scope.form.id;
+                $scope.notes = loadList(id_opportunity);
                 formatDates($scope.notes);
 
                 $scope.$parent.form.id_user_account_manager = $rootScope.user.id;
@@ -169,11 +206,13 @@ app.controller("ComZeappsOpportunityEditCtrl", ["$scope", "$rootScope", "zeHttp"
 
         // ********************* Private ************************
         function formatDates(notes) {
-            notes.forEach(function(element) {
-                element.created_at = element.created_at.replace(" ", "T");
-                var new_date = new Date(element.created_at);
-                element.created_at = new_date.toLocaleString();
-            });
+            if (notes != undefined) {
+                notes.forEach(function(element) {
+                    element.created_at = element.created_at.replace(" ", "T");
+                    var new_date = new Date(element.created_at);
+                    element.created_at = new_date.toLocaleString();
+                });
+            }
         }
 
 	}]);
