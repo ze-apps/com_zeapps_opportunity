@@ -26,6 +26,11 @@ class View extends Controller
         return view("notes/form_modal", $data, BASEPATH . 'App/com_zeapps_opportunity/views/');
     }
 
+    public function opportunitiesFormDocument(){
+        $data = array();
+        return view("documents/form_modal", $data, BASEPATH . 'App/com_zeapps_opportunity/views/');
+    }
+
     public function opportunitiesModal(){
         $data = array();
         return view("opportunities/modalCompany", $data, BASEPATH . 'App/com_zeapps_opportunity/views/');

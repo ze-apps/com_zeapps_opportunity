@@ -162,8 +162,8 @@ app.config(["$provide",
             function getAll_documents(id_user_account_manager, id_opportunity) {
                 return zeHttp.post("/com_zeapps_opportunity/documents/getAll/" + id_user_account_manager + "/" + id_opportunity);
             }
-            function save_document(id_user_account_manager, id_opportunity) {
-                return zeHttp.post("/com_zeapps_opportunity/documents/save/" + id_user_account_manager + "/" + id_opportunity);
+            function save_document(data){
+                return zeHttp.post("/com_zeapps_opportunity/documents/save", data);
             }
             function delete_document(id_user_account_manager, id_opportunity) {
                 return zeHttp.delete("/com_zeapps_opportunity/documents/delete/" + id_user_account_manager + "/" + id_opportunity);

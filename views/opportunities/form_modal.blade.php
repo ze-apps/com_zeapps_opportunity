@@ -149,6 +149,7 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
 
@@ -158,46 +159,28 @@
 
         <div class="row">
 
-            <div class="col-md-12 center-block" style="margin-bottom: 7px">
+            <div class="col-md-12">
 
-                <form method="post" enctype="multipart/form-data" id="formUploadFile" name="formUploadFile">
+                <div class="form-group pull-right">
+                    <ze-btn fa="plus" color="primary" hint="Document" always-on="true"
+                            ze-modalform="addDoc"
+                            data-template="templateDoc"
+                            data-title="Ajouter de nouveaux documents"></ze-btn>
+                </div>
 
-                    <div class="col-md-offset-3 col-md-4">
-                        <input type="file" name="files[]" multiple="multiple" />
-                    </div>
+                <div class="form-group">
+                    <table class="table table-condensed table-striped" ng-if="documents">
 
-                    <div class="col-md-2">
-                        <button id="btnSubmit" name="btnSubmit" type="submit" title="Envoyer ce document" class="btn btn-xs btn-primary">
-                            <i class="fa fa-upload"></i>
-                        </button>
-                    </div>
-
-                    <script type="text/javascript">
-
-                        $('#btnSubmit').click(function(e) {
-                            $('#formUploadFile')[0].submit();
-                            e.preventDefault();
-                        });
-
-                    </script>
-
-                </form>
-
-            </div>
-
-            <div class="col-md-12 center-block">
-                <table class="table table-condensed table-striped" ng-if="documents">
-
-                    <thead class="bg-primary">
+                        <thead class="bg-primary">
                         <tr>
                             <th>Nom du fichier</th>
                             <th>Taille</th>
                             <th>Date d'envoi</th>
                             <th>Action</th>
                         </tr>
-                    </thead>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
                         <tr ng-repeat="document in documents">
                             <td><strong>@{{document.label}}</strong></td>
                             <td>@{{document.size}}</td>
@@ -206,8 +189,10 @@
                                 <ze-btn fa="trash" color="danger" hint="Supprimer" direction="left" ng-click="delete(document)" data-title="Supprimer ce fichier" ze-confirmation></ze-btn>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
 
         </div>

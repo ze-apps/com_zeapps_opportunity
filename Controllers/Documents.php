@@ -44,105 +44,39 @@ class Documents extends Controller
         echo json_encode(array('documents' => $documents));
     }
 
-    private function upload()
-    {
-        $errors = array();
-        $uploadedFiles = array();
-        $extension = array("jpeg","jpg","png","gif");
-        $bytes = 1024;
-        $KB = 1024;
-        $totalBytes = $bytes * $KB;
-        $UploadFolder = "/uploads";
-
-        $counter = 0;
-
-        foreach($_FILES["files"]["tmp_name"] as $key => $tmp_name) {
-
-            $temp = $_FILES["files"]["tmp_name"][$key];
-            $name = $_FILES["files"]["name"][$key];
-
-            if (empty($temp)) {
-                break;
-            }
-
-            $counter++;
-            $UploadOk = true;
-
-            if($_FILES["files"]["size"][$key] > $totalBytes) {
-                $UploadOk = false;
-                array_push($errors, $name." La taille du fichier est supérieure à 1M.");
-            }
-
-            $ext = pathinfo($name, PATHINFO_EXTENSION);
-            if(in_array($ext, $extension) == false){
-                $UploadOk = false;
-                array_push($errors, $name." est un type de fichier invalide.");
-            }
-
-            if(file_exists($UploadFolder."/".$name) == true){
-                $UploadOk = false;
-                array_push($errors, $name." fichier déjà existant.");
-            }
-
-            if($UploadOk == true){
-                move_uploaded_file($temp,$UploadFolder."/".$name);
-                array_push($uploadedFiles, $name);
-            }
-        }
-
-        /*if ($counter>0) {
-            if (count($errors)>0)
-            {
-                echo "<b>Erreurs : </b>";
-                echo "<br/><ul>";
-                foreach($errors as $error)
-                {
-                    echo "<li>".$error."</li>";
-                }
-                echo "</ul><br/>";
-            }
-
-            if (count($uploadedFiles)>0) {
-                echo "<b>Fichiers chargés : </b>";
-                echo "<br/><ul>";
-                foreach($uploadedFiles as $fileName) {
-                    echo "<li>".$fileName."</li>";
-                }
-                echo "</ul><br/>";
-
-                echo count($uploadedFiles)." fichier(s) ont été chargés correctement.";
-            }
-        } else {
-            echo "Merci de sélectionner le(s) fichier(s) à charger.";
-        }*/
-    }
-
     public function save()
     {
-        var_dump('t dans la bonne methode');
+        $ind = 0;
 
+        while (isset($_FILES['file'.$ind]['name']) && $_FILES['file'.$ind]['name']) {
 
+            $tmpname = $_FILES['file'.$ind]['tmp_name'];
+            $filename = $_FILES['file'.$ind]['name'];
+            $filesize = $_FILES['file'.$ind]['size'];
+            $filepath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
+            $filetype = $_FILES['file'.$ind]['type'];
 
-        // constitution du tableau
-        $data = array() ;
+            // Save file to DB
+            if (!is_file($filepath . $filename)) {
 
-        if (strcasecmp($_SERVER['REQUEST_METHOD'], 'post') === 0 && stripos($_SERVER['CONTENT_TYPE'], 'application/json') !== FALSE) {
-            // POST is actually in json format, do an internal translation
-            $data = json_decode(file_get_contents('php://input'), true);
+                $document = new Document();
+                $document->label = $filename;
+                $document->size = $filesize;
+                $document->path = $filepath;
+                $document->type = $filetype;
+
+                $document->id_opportunity = 2;
+                $document->id_user_account_manager = 1;
+
+                $document->save();
+
+                // Upload file
+                move_uploaded_file($tmpname,$filepath . $filename);
+            }
+
+            $ind++;
         }
 
-        /*$document = new Document() ;
-
-        foreach ($data as $key => $value) {
-            $document->$key = $value;
-        }
-
-        $document->save();*/
-
-        $this->upload();
-
-        echo 44;
-        //echo $document->id;
     }
 
     public function delete(Request $request)

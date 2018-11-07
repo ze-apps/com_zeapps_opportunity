@@ -20,7 +20,7 @@ class Document extends Model {
     {
         $this->table = self::$_table;
 
-        // Note fields
+        // Document fields
         $this->fieldModelInfo = new ModelHelper();
         $this->fieldModelInfo->increments('id');
         $this->fieldModelInfo->text('label');

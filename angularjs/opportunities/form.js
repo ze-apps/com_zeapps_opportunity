@@ -6,22 +6,9 @@ app.controller("ComZeappsOpportunityEditCtrl", ["$scope", "$rootScope", "zeHttp"
 
         $scope.templateForm = '/com_zeapps_opportunity/notes/form_modal';
 
+        $scope.templateDoc = '/com_zeapps_opportunity/documents/form_modal';
+
         $scope.add = add;
-        $scope.edit = edit;
-        $scope.delete = del;
-
-        $scope.upload = upload;
-        function upload(document) {
-            note.id_opportunity = $scope.form.id ;
-            var formatted_data = angular.toJson(document);
-            zhttp.opportunity.document.save(formatted_data).then(function (response) {
-                if (response.data && response.data !== "false") {
-                    loadList();
-                }
-            });
-        }
-
-
         function add(note) {
             note.id_opportunity = $scope.form.id ;
             var formatted_data = angular.toJson(note);
@@ -32,6 +19,36 @@ app.controller("ComZeappsOpportunityEditCtrl", ["$scope", "$rootScope", "zeHttp"
             });
         }
 
+        $scope.addDoc = addDoc;
+        function addDoc() {
+
+            var form_data = new FormData();
+            var ind = 0;
+
+            while ($('input[type=file]')[0].files[ind] != undefined) {
+                form_data.append('file'+ind, $('input[type=file]')[0].files[ind]);
+                ind++;
+            }
+
+            $.ajax({
+                method: 'POST',
+                url: "/com_zeapps_opportunity/documents/save",
+                processData: false,
+                contentType: false,
+                data: form_data
+            }).done(function () {
+
+                zhttp.opportunity.document.save().then(function (response) {
+                    if (response.status == 200) {
+                        loadList();
+                    }
+                });
+
+            });
+
+        }
+
+        $scope.edit = edit;
         function edit(note) {
             note.id_opportunity = $scope.form.id ;
             var formatted_data = angular.toJson(note);
@@ -42,6 +59,7 @@ app.controller("ComZeappsOpportunityEditCtrl", ["$scope", "$rootScope", "zeHttp"
             });
         }
 
+        $scope.delete = del;
         function del(note) {
             zhttp.opportunity.note.del(note.id).then(function (response) {
                 if (response.status == 200) {
