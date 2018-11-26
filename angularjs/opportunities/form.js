@@ -20,7 +20,10 @@ app.controller("ComZeappsOpportunityEditCtrl", ["$scope", "$rootScope", "zeHttp"
         }
 
         $scope.addDoc = addDoc;
-        function addDoc() {
+        function addDoc(document) {
+
+            document.id_opportunity = $scope.form.id;
+            var formatted_data = angular.toJson(document);
 
             var form_data = new FormData();
             var ind = 0;
@@ -38,7 +41,7 @@ app.controller("ComZeappsOpportunityEditCtrl", ["$scope", "$rootScope", "zeHttp"
                 data: form_data
             }).done(function () {
 
-                zhttp.opportunity.document.save().then(function (response) {
+                zhttp.opportunity.document.save(formatted_data).then(function (response) {
                     if (response.status == 200) {
                         loadList();
                     }

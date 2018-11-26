@@ -46,6 +46,14 @@ class Documents extends Controller
 
     public function save()
     {
+        // constitution du tableau
+        $data = array() ;
+
+        if (strcasecmp($_SERVER['REQUEST_METHOD'], 'post') === 0 && stripos($_SERVER['CONTENT_TYPE'], 'application/json') !== FALSE) {
+            // POST is actually in json format, do an internal translation
+            $data = json_decode(file_get_contents('php://input'), true);
+        }
+
         $ind = 0;
 
         while (isset($_FILES['file'.$ind]['name']) && $_FILES['file'.$ind]['name']) {
@@ -57,21 +65,24 @@ class Documents extends Controller
             $filetype = $_FILES['file'.$ind]['type'];
 
             // Save file to DB
-            if (!is_file($filepath . $filename)) {
+            if (isset($data['id_user_account_manager']) && isset($data['id_opportunity'])) {
 
-                $document = new Document();
-                $document->label = $filename;
-                $document->size = $filesize;
-                $document->path = $filepath;
-                $document->type = $filetype;
+                if (!is_file($filepath . $filename)) {
 
-                $document->id_opportunity = 2;
-                $document->id_user_account_manager = 1;
+                    $document = new Document();
+                    $document->label = $filename;
+                    $document->size = $filesize;
+                    $document->path = $filepath;
+                    $document->type = $filetype;
 
-                $document->save();
+                    $document->id_opportunity = $data['id_opportunity'];
+                    $document->id_user_account_manager = $data['id_user_account_manager'];
 
-                // Upload file
-                move_uploaded_file($tmpname,$filepath . $filename);
+                    $document->save();
+
+                    // Upload file
+                    move_uploaded_file($tmpname, $filepath . $filename);
+                }
             }
 
             $ind++;

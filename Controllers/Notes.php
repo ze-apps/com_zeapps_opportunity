@@ -49,18 +49,18 @@ class Notes extends Controller
         foreach ($data as $key => $value) {
 
             if ($key == 'created_at') {
+
                 $value = explode(' à ', $value);
 
                 $date = $value[0];
                 $date = explode('/', $date);
 
                 $heure = $value[1];
-
                 $note->$key = $date[2] . '-' . $date[1] . '-' . $date[0] . ' ' . $heure;
+
             } else {
                 $note->$key = $value;
             }
-
         }
 
         $note->save();

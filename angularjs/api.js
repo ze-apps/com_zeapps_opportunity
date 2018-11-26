@@ -85,7 +85,7 @@ app.config(["$provide",
                 return "/com_zeapps_contact/companies/get_export/";
             }
 
-            ///////////////////////////// CONTACT ///////////////////////////////
+            //////////////////////////////////////////// CONTACT /////////////////////////////////////////////
             //
             function context_contact(){
                 return zeHttp.get("/com_zeapps_contact/contacts/context/");
