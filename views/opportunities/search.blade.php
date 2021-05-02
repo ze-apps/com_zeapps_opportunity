@@ -45,10 +45,10 @@
                         <td>@{{opportunity.name_company}}</td>
                         <td>@{{opportunity.name_contact}}</td>
                         <td>@{{opportunity.name_activity}}</td>
-                        <td>@{{opportunity.budget | number:2}} €</td>
+                        <td>@{{opportunity.budget | currencyConvert }}</td>
                         <td>@{{opportunity.name_status}}</td>
                         <td>@{{opportunity.progression}}</td>
-                        <td>@{{opportunity.next_raise || "-" | date:'dd/MM/yyyy'}}</td>
+                        <td>@{{opportunity.next_raise | dateConvert:'date' }}</td>
 
                         <td class="text-right">
                             <ze-btn fa="pencil" color="info" hint="Editer" direction="left"

@@ -63,7 +63,7 @@
 
         <div class="col-md-6">
             <div class="form-group">
-                <label>Budget (€)</label>
+                <label>Budget</label>
                 <input type="text" ng-model="form.budget" class="form-control">
             </div>
         </div>
@@ -135,7 +135,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="note in notes">
-                                <td class="col-md-3">@{{note.created_at || "-" | date:'dd/MM/yyyy'}}</td>
+                                <td class="col-md-3">@{{note.created_at | dateConvert:'date' }}</td>
                                 <td class="col-md-8">@{{note.comments}}</td>
                                 <td class="col-md-1">
                                     <ze-btn fa="pencil" color="info" hint="Editer" direction="left"
@@ -184,7 +184,7 @@
                         <tr ng-repeat="document in documents">
                             <td><strong>@{{document.label}}</strong></td>
                             <td>@{{document.size}}</td>
-                            <td>@{{document.created_at || "-" | date:'dd/MM/yyyy'}}</td>
+                            <td>@{{document.created_at | dateConvert:'date' }}</td>
                             <td class="col-md-1">
                                 <ze-btn fa="trash" color="danger" hint="Supprimer" direction="left" ng-click="delete(document)" data-title="Supprimer ce fichier" ze-confirmation></ze-btn>
                             </td>

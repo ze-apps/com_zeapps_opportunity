@@ -8,7 +8,7 @@
 </div>
 <div class="row">
     <div class="col-md-4">
-        <strong>Chiffre d'affaires : </strong>@{{company.turnover | currency:'€'}}
+        <strong>Chiffre d'affaires : </strong>@{{company.turnover | currencyConvert }}
     </div>
     <div class="col-md-4">
         <strong>Compte comptable : </strong>@{{company.accounting_number}}
@@ -97,7 +97,7 @@
                 <tbody>
                 <tr ng-repeat="turnover in company.turnovers">
                     <td>@{{turnover.year}}</td>
-                    <td class="text-right">@{{turnover.total_ht | currency:'€':2}}</td>
+                    <td class="text-right">@{{turnover.total_ht | currencyConvert }}</td>
                 </tr>
                 </tbody>
             </table>
